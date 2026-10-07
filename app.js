@@ -1,370 +1,302 @@
 const COUNTIES = [
-  "Nairobi", "Mombasa", "Kisumu", "Kiambu", "Nakuru", "Uasin Gishu",
-  "Machakos", "Kajiado", "Nyeri", "Kakamega", "Kilifi", "Meru"
+  { name: "Nairobi", lat: -1.2864, lng: 36.8172 },
+  { name: "Mombasa", lat: -4.0435, lng: 39.6682 },
+  { name: "Kisumu", lat: -0.0917, lng: 34.768 },
+  { name: "Nakuru", lat: -0.3031, lng: 36.08 },
+  { name: "Kiambu", lat: -1.1714, lng: 36.8356 },
+  { name: "Uasin Gishu", lat: 0.5143, lng: 35.2698 },
+  { name: "Nyeri", lat: -0.4371, lng: 36.958 },
+  { name: "Machakos", lat: -1.5177, lng: 37.2634 },
+  { name: "Kakamega", lat: 0.2827, lng: 34.7519 },
+  { name: "Kilifi", lat: -3.5107, lng: 39.9093 },
+  { name: "Kajiado", lat: -1.8524, lng: 36.7768 },
+  { name: "Meru", lat: 0.0463, lng: 37.6559 }
+];
+const INTERESTS = ["Coffee", "Hiking", "Gospel", "Afrobeats", "Football", "Startups", "Cooking", "Travel", "Photography", "Church", "Gym", "Movies"];
+const TRIBES = ["Kikuyu", "Luo", "Luhya", "Kalenjin", "Kamba", "Kisii", "Meru", "Mijikenda", "Somali", "Prefer not to say"];
+const RELIGIONS = ["Christian", "Muslim", "Traditional", "Spiritual", "Prefer not to say"];
+const MODES = ["Open", "Student", "Professional", "Church"];
+const KEY = "karibu-ke-v1";
+
+const seed = [
+  { id: "a1", name: "Amina", age: 26, county: "Mombasa", tribe: "Mijikenda", religion: "Muslim", mode: "Professional", bio: "Nyali sunsets, pilau, and long walks on the sea wall.", interests: ["Travel", "Cooking", "Photography"], gender: "Woman", looking: "Men", lat: -4.04, lng: 39.7, hue: 18 },
+  { id: "a2", name: "Brian", age: 29, county: "Nairobi", tribe: "Kikuyu", religion: "Christian", mode: "Professional", bio: "Westlands product designer. Saturdays are for Karura.", interests: ["Hiking", "Startups", "Coffee"], gender: "Man", looking: "Women", lat: -1.27, lng: 36.8, hue: 150 },
+  { id: "a3", name: "Chebet", age: 24, county: "Uasin Gishu", tribe: "Kalenjin", religion: "Christian", mode: "Student", bio: "Eldoret campus. Track in the morning, chai in the evening.", interests: ["Gym", "Gospel", "Movies"], gender: "Woman", looking: "Everyone", lat: 0.52, lng: 35.27, hue: 32 },
+  { id: "a4", name: "David", age: 31, county: "Kisumu", tribe: "Luo", religion: "Christian", mode: "Open", bio: "Lake views, ohangla, and a small grill in Milimani.", interests: ["Cooking", "Afrobeats", "Football"], gender: "Man", looking: "Women", lat: -0.09, lng: 34.76, hue: 200 },
+  { id: "a5", name: "Faith", age: 27, county: "Kiambu", tribe: "Kikuyu", religion: "Christian", mode: "Church", bio: "Sunday service, then coffee in Ruaka. Looking for something serious.", interests: ["Church", "Coffee", "Travel"], gender: "Woman", looking: "Men", lat: -1.16, lng: 36.84, hue: 280 },
+  { id: "a6", name: "Hassan", age: 33, county: "Nairobi", tribe: "Somali", religion: "Muslim", mode: "Professional", bio: "Eastleigh to Upper Hill. Quiet dinners over loud clubs.", interests: ["Travel", "Coffee", "Movies"], gender: "Man", looking: "Women", lat: -1.29, lng: 36.85, hue: 130 },
+  { id: "a7", name: "Wanjiku", age: 23, county: "Nyeri", tribe: "Kikuyu", religion: "Christian", mode: "Student", bio: "Agribusiness student. Farms, books, and Aberdare hikes.", interests: ["Hiking", "Cooking", "Photography"], gender: "Woman", looking: "Men", lat: -0.44, lng: 36.96, hue: 340 },
+  { id: "a8", name: "Otieno", age: 28, county: "Nakuru", tribe: "Luo", religion: "Prefer not to say", mode: "Professional", bio: "Lake Nakuru weekends. I will split a nyama choma bill fairly.", interests: ["Football", "Travel", "Afrobeats"], gender: "Man", looking: "Everyone", lat: -0.3, lng: 36.08, hue: 90 }
 ];
 
-const PEOPLE = [
-  { id: 1, name: "Amina", age: 26, county: "Mombasa", town: "Nyali", km: 4.2, tribe: "Swahili", religion: "Muslim", mode: "Professional", interests: ["Beach walks", "Afrobeats", "Food"], bio: "Coast girl who will debate pilau recipes and still make it to sunset.", photo: "https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=800&q=80" },
-  { id: 2, name: "Brian", age: 29, county: "Nairobi", town: "Westlands", km: 2.1, tribe: "Kikuyu", religion: "Christian", mode: "Professional", interests: ["Gym", "Jazz", "Startups"], bio: "Product guy by day, nyama choma strategist on Sundays.", photo: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=800&q=80" },
-  { id: 3, name: "Wanjiku", age: 24, county: "Kiambu", town: "Ruiru", km: 11, tribe: "Kikuyu", religion: "Christian", mode: "Student", interests: ["Poetry", "Hikes", "Church"], bio: "Looking for someone who can keep up on a Ngong hike and a deep conversation.", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=800&q=80" },
-  { id: 4, name: "Otieno", age: 31, county: "Kisumu", town: "Milimani", km: 7.8, tribe: "Luo", religion: "Christian", mode: "Professional", interests: ["Football", "Cooking", "Lake"], bio: "Lakeside evenings, Gor Mahia Saturdays, good soup any day.", photo: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=800&q=80" },
-  { id: 5, name: "Faith", age: 27, county: "Nakuru", town: "Milimani", km: 18, tribe: "Kalenjin", religion: "Christian", mode: "Church", interests: ["Running", "Worship", "Tea"], bio: "Early mornings, long runs, and someone who texts back.", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=800&q=80" },
-  { id: 6, name: "Hassan", age: 28, county: "Nairobi", town: "Eastleigh", km: 5.4, tribe: "Somali", religion: "Muslim", mode: "Professional", interests: ["Cars", "Fashion", "Business"], bio: "Building something quiet. Want a partner who gets hustle and home.", photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80" },
-  { id: 7, name: "Chebet", age: 23, county: "Uasin Gishu", town: "Eldoret", km: 22, tribe: "Kalenjin", religion: "Christian", mode: "Student", interests: ["Athletics", "Campus", "Netflix"], bio: "Eldoret energy. Slow chats, fast miles.", photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=800&q=80" },
-  { id: 8, name: "Mwende", age: 30, county: "Machakos", town: "Syokimau", km: 14, tribe: "Kamba", religion: "Christian", mode: "Professional", interests: ["Travel", "Design", "Markets"], bio: "Designer who still believes the best dates start at a local market.", photo: "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=800&q=80" }
-];
+const state = load();
+let screen = state.user ? "discover" : "home";
+let chatWith = null;
+let filters = { county: "Any", distance: 80, minAge: 18, maxAge: 40, tribe: "Any", religion: "Any", mode: "Any", interest: "Any" };
 
-const store = {
-  get(key, fallback) {
-    try { return JSON.parse(localStorage.getItem(key)) ?? fallback; }
-    catch { return fallback; }
-  },
-  set(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
-};
-
-function toast(msg) {
-  const el = document.createElement("div");
-  el.className = "toast";
-  el.textContent = msg;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 2400);
+function load() {
+  const raw = localStorage.getItem(KEY);
+  if (raw) return JSON.parse(raw);
+  return {
+    user: null,
+    accounts: [{ email: "demo@karibu.ke", password: "karibu123", profile: { name: "Demo", age: 25, county: "Nairobi", tribe: "Prefer not to say", religion: "Christian", mode: "Open", bio: "Trying Karibu around Nairobi.", interests: ["Coffee", "Travel"], gender: "Woman", looking: "Everyone", lat: -1.29, lng: 36.82, photos: [] } }],
+    likes: {}, passes: {}, matches: [], messages: {}, blocks: [], reports: [], notes: []
+  };
 }
-
-function haversine(a, b) {
-  const R = 6371;
-  const dLat = (b.lat - a.lat) * Math.PI / 180;
-  const dLon = (b.lng - a.lng) * Math.PI / 180;
-  const s = Math.sin(dLat/2) ** 2 + Math.cos(a.lat*Math.PI/180) * Math.cos(b.lat*Math.PI/180) * Math.sin(dLon/2) ** 2;
-  return R * 2 * Math.atan2(Math.sqrt(s), Math.sqrt(1-s));
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+function km(a, b) {
+  const R = 6371, dLat = (b.lat - a.lat) * Math.PI / 180, dLng = (b.lng - a.lng) * Math.PI / 180;
+  const x = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * Math.PI / 180) * Math.cos(b.lat * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x)));
 }
-
-function currentUser() { return store.get("karibu_user", null); }
-function likes() { return store.get("karibu_likes", []); }
-function passes() { return store.get("karibu_passes", []); }
-function matches() { return store.get("karibu_matches", []); }
-function chats() { return store.get("karibu_chats", {}); }
-function setUser(u) { store.set("karibu_user", u); }
-function addLike(id) {
-  const l = likes();
-  if (!l.includes(id)) l.push(id);
-  store.set("karibu_likes", l);
-  if (!matches().includes(id) && Math.random() > 0.35) {
-    const m = matches(); m.push(id); store.set("karibu_matches", m);
-    return true;
-  }
-  return false;
+function me() { return state.user && state.user.profile; }
+function photoStyle(p) {
+  if (p.photos && p.photos[0]) return `url('${p.photos[0]}') center/cover`;
+  return `linear-gradient(145deg, hsl(${p.hue || 150} 55% 42%), hsl(${(p.hue || 150) + 40} 60% 28%))`;
 }
-function addPass(id) {
-  const p = passes();
-  if (!p.includes(id)) p.push(id);
-  store.set("karibu_passes", p);
+function candidates() {
+  const profile = me();
+  if (!profile) return [];
+  return seed.filter(p => {
+    if (state.blocks.includes(p.id) || (state.passes[state.user.email] || []).includes(p.id)) return false;
+    if ((state.likes[state.user.email] || []).includes(p.id)) return false;
+    if (filters.county !== "Any" && p.county !== filters.county) return false;
+    if (p.age < filters.minAge || p.age > filters.maxAge) return false;
+    if (filters.tribe !== "Any" && p.tribe !== filters.tribe) return false;
+    if (filters.religion !== "Any" && p.religion !== filters.religion) return false;
+    if (filters.mode !== "Any" && p.mode !== filters.mode) return false;
+    if (filters.interest !== "Any" && !p.interests.includes(filters.interest)) return false;
+    if (profile.looking === "Men" && p.gender !== "Man") return false;
+    if (profile.looking === "Women" && p.gender !== "Woman") return false;
+    return km(profile, p) <= Number(filters.distance);
+  }).map(p => ({ ...p, distance: km(profile, p) })).sort((a, b) => a.distance - b.distance);
 }
-
-const routes = {
-  "/": landing,
-  "/login": auth.bind(null, "login"),
-  "/register": auth.bind(null, "register"),
-  "/app": appShell.bind(null, "discover"),
-  "/app/swipe": appShell.bind(null, "swipe"),
-  "/app/matches": appShell.bind(null, "matches"),
-  "/app/chat": appShell.bind(null, "chat"),
-  "/app/profile": appShell.bind(null, "profile"),
-  "/app/safety": appShell.bind(null, "safety"),
-  "/app/premium": appShell.bind(null, "premium"),
-};
-
-function path() {
-  const h = location.hash.replace("#", "") || "/";
-  return h.split("?")[0];
-}
-function query() {
-  const q = location.hash.split("?")[1] || "";
-  return Object.fromEntries(new URLSearchParams(q));
-}
-
-function landing() {
-  return `
-  <div class="wrap">
-    <header class="topbar">
-      <div class="brand">Karibu<span>.</span></div>
-      <nav class="nav">
-        <a class="btn ghost" href="#/login">Log in</a>
-        <a class="btn primary" href="#/register">Create profile</a>
-      </nav>
-    </header>
-    <section class="hero">
-      <div>
-        <div class="kicker">Location-based matchmaking · Kenya</div>
-        <h1>Meet someone in your county, not just on your phone.</h1>
-        <p>Karibu helps Kenyans find people nearby — Nairobi to Mombasa, campus to church, professional to chill. Filter by distance, county, vibe, and actually talk.</p>
-        <a class="btn primary" href="#/register">Start matching</a>
-        <a class="btn" href="#/app" style="margin-left:8px">Peek the demo</a>
-      </div>
-      <article class="preview">
-        <img src="${PEOPLE[0].photo}" alt="Featured profile" />
-        <div class="meta">
-          <h3>Amina, 26 · Nyali</h3>
-          <p>4.2 km away · Mombasa · Beach walks, Afrobeats</p>
-        </div>
-      </article>
-    </section>
-    <section class="grid-3">
-      <article class="card"><h3>Nearby first</h3><p>We rank people by GPS distance and county so a match in Ruiru beats a stranger in another country.</p></article>
-      <article class="card"><h3>Kenyan filters</h3><p>County, town, tribe, religion, student / professional / church modes — plus Sheng-friendly bios.</p></article>
-      <article class="card"><h3>Safer chats</h3><p>Report and block are one tap away. Premium (M-Pesa) is optional, never required to start.</p></article>
-    </section>
-  </div>`;
-}
-
-function auth(mode) {
-  const title = mode === "login" ? "Welcome back" : "Create your Karibu";
-  return `
-  <div class="wrap auth card">
-    <div class="brand">Karibu<span>.</span></div>
-    <h2 style="margin:12px 0">${title}</h2>
-    <form class="form" id="auth-form">
-      ${mode === "register" ? `<input name="name" placeholder="First name" required />` : ""}
-      <input name="email" type="email" placeholder="Email" required />
-      <input name="password" type="password" placeholder="Password" required />
-      ${mode === "register" ? `
-        <select name="county">${COUNTIES.map(c => `<option>${c}</option>`).join("")}</select>
-        <select name="mode">
-          <option>Professional</option><option>Student</option><option>Church</option>
-        </select>` : ""}
-      <button class="btn primary" type="submit">${mode === "login" ? "Log in" : "Create account"}</button>
-    </form>
-    <p class="notice">Demo auth only — saved in this browser. Production should use real identity (Netlify Identity, Clerk, or Supabase).</p>
-    <p class="notice"><a href="#/${mode === "login" ? "register" : "login"}" style="color:var(--gold)">${mode === "login" ? "Need an account?" : "Already have one?"}</a></p>
-  </div>`;
-}
-
-function side(view) {
-  const items = [
-    ["discover", "/app", "Discover"],
-    ["swipe", "/app/swipe", "Swipe"],
-    ["matches", "/app/matches", "Matches"],
-    ["profile", "/app/profile", "Profile"],
-    ["safety", "/app/safety", "Safety"],
-    ["premium", "/app/premium", "Premium"],
-  ];
-  return `
-    <aside class="side">
-      <a class="brand" href="#/">Karibu<span>.</span></a>
-      ${items.map(([id, href, label]) => `<a class="${view===id?"active":""}" href="#${href}">${label}</a>`).join("")}
-      <button class="link" id="logout">Log out</button>
-    </aside>`;
-}
-
-function personCard(p) {
-  return `
-    <article class="card person" data-id="${p.id}">
-      <img src="${p.photo}" alt="${p.name}" />
-      <div class="body">
-        <div class="row">
-          <h3>${p.name}, ${p.age}</h3>
-          <span class="chip">${p.km} km</span>
-        </div>
-        <p>${p.town}, ${p.county} · ${p.mode}</p>
-        <p style="margin-top:8px">${p.bio}</p>
-        <p class="notice">${p.interests.join(" · ")} · ${p.religion}</p>
-        <div class="actions">
-          <button class="btn" data-act="pass" data-id="${p.id}">Pass</button>
-          <button class="btn primary" data-act="like" data-id="${p.id}">Like</button>
-        </div>
-      </div>
-    </article>`;
-}
-
-function discoverView() {
-  const hidden = new Set([...likes(), ...passes()]);
-  const county = store.get("karibu_filter_county", "All");
-  const maxKm = Number(store.get("karibu_filter_km", 50));
-  const list = PEOPLE.filter(p => !hidden.has(p.id))
-    .filter(p => county === "All" || p.county === county)
-    .filter(p => p.km <= maxKm);
-  return `
-    <div class="filters">
-      <select id="f-county">
-        <option>All</option>
-        ${COUNTIES.map(c => `<option ${c===county?"selected":""}>${c}</option>`).join("")}
-      </select>
-      <select id="f-km">
-        ${[5,10,25,50,100].map(n => `<option value="${n}" ${n===maxKm?"selected":""}>Within ${n} km</option>`).join("")}
-      </select>
-      <button class="btn" id="geo">Use my location</button>
-    </div>
-    <div class="feed">${list.length ? list.map(p => personCard(p)).join("") : `<p class="notice">No one left in this filter. Reset likes from Profile or widen distance.</p>`}</div>`;
-}
-
-function swipeView() {
-  const hidden = new Set([...likes(), ...passes()]);
-  const next = PEOPLE.find(p => !hidden.has(p.id));
-  if (!next) return `<p class="notice">Deck is empty. Check Matches or reset from Profile.</p>`;
-  return `<div class="swipe">${personCard(next)}</div>`;
-}
-
-function matchesView() {
-  const ids = matches();
-  const list = PEOPLE.filter(p => ids.includes(p.id));
-  if (!list.length) return `<p class="notice">No matches yet. Like a few profiles — some will match back.</p>`;
-  return `<div class="matches">${list.map(p => `
-    <div class="match">
-      <img src="${p.photo}" alt="" />
-      <div><strong>${p.name}</strong><div class="notice">${p.town} · ${p.km} km</div></div>
-      <a class="btn primary" href="#/app/chat?with=${p.id}">Chat</a>
-    </div>`).join("")}</div>`;
-}
-
-function chatView() {
-  const id = Number(query().with || matches()[0]);
-  const person = PEOPLE.find(p => p.id === id);
-  if (!person) return `<p class="notice">Pick a match first.</p>`;
-  const thread = chats()[id] || [{ who: "them", text: `Sasa. You nearby ${person.town}?` }];
-  return `
-    <div class="chat">
-      <header><strong>${person.name}</strong> · ${person.km} km · <button class="btn danger" data-act="report" data-id="${person.id}">Report</button></header>
-      <div class="msgs">${thread.map(m => `<div class="bubble ${m.who}">${m.text}</div>`).join("")}</div>
-      <form class="composer" id="chat-form">
-        <input name="text" placeholder="Write a message…" autocomplete="off" />
-        <button class="btn primary">Send</button>
-      </form>
-    </div>`;
-}
-
-function profileView() {
-  const u = currentUser() || { name: "You", email: "", county: "Nairobi", mode: "Professional", bio: "" };
-  return `
-    <form class="form card" id="profile-form">
-      <h2>Your profile</h2>
-      <input name="name" value="${u.name || ""}" placeholder="Name" />
-      <input name="email" value="${u.email || ""}" placeholder="Email" />
-      <select name="county">${COUNTIES.map(c => `<option ${c===u.county?"selected":""}>${c}</option>`).join("")}</select>
-      <select name="mode">
-        ${["Professional","Student","Church"].map(m => `<option ${m===u.mode?"selected":""}>${m}</option>`).join("")}
-      </select>
-      <textarea name="bio" rows="4" placeholder="Bio">${u.bio || ""}</textarea>
-      <p class="notice">Photo uploads belong in production (Cloudinary / Netlify Blobs). Demo uses stock photos.</p>
-      <button class="btn primary">Save profile</button>
-      <button type="button" class="btn" id="reset-deck">Reset likes & passes</button>
-    </form>`;
-}
-
-function safetyView() {
-  return `
-    <div class="card form">
-      <h2>Stay safe</h2>
-      <p>Meet in public first. Never send M-Pesa to a stranger to “verify” anything.</p>
-      <label>Report a user</label>
-      <select id="report-user">${PEOPLE.map(p => `<option value="${p.id}">${p.name} · ${p.county}</option>`).join("")}</select>
-      <textarea id="report-why" rows="3" placeholder="What happened?"></textarea>
-      <button class="btn danger" id="send-report">Submit report</button>
-      <p class="notice">Reports are stored locally in this demo. Production should notify moderators and hide the reported profile.</p>
-    </div>`;
-}
-
-function premiumView() {
-  return `
-    <div class="card form">
-      <h2>Karibu Plus</h2>
-      <p>See who liked you, rewind a pass, and boost in your county. Pay with M-Pesa STK Push when Daraja keys are connected.</p>
-      <input id="mpesa-phone" placeholder="2547XXXXXXXX" />
-      <button class="btn gold" id="stk">Send STK prompt · KES 499 / month</button>
-      <p class="notice">This button only simulates the prompt. Wire Safaricom Daraja from a Netlify Function for live payments.</p>
-    </div>`;
-}
-
-function appShell(view) {
-  const body = {
-    discover: discoverView,
-    swipe: swipeView,
-    matches: matchesView,
-    chat: chatView,
-    profile: profileView,
-    safety: safetyView,
-    premium: premiumView
-  }[view]();
-  return `<div class="app-shell">${side(view)}<main class="main">${body}</main></div>`;
-}
+function notify(text) { state.notes.unshift({ id: Date.now(), text, at: new Date().toLocaleTimeString() }); save(); }
 
 function render() {
-  const p = path();
-  const view = (routes[p] || landing)();
-  document.getElementById("app").innerHTML = view;
+  const app = document.getElementById("app");
+  app.innerHTML = state.user ? appShell() : publicShell();
   bind();
 }
-
-function bind() {
-  const authForm = document.getElementById("auth-form");
-  if (authForm) authForm.onsubmit = (e) => {
-    e.preventDefault();
-    const data = Object.fromEntries(new FormData(authForm));
-    setUser({ ...currentUser(), ...data });
-    toast("Karibu. You’re in.");
-    location.hash = "/app";
-  };
-  document.getElementById("logout")?.addEventListener("click", () => { location.hash = "/"; });
-  document.getElementById("f-county")?.addEventListener("change", (e) => {
-    store.set("karibu_filter_county", e.target.value); render();
-  });
-  document.getElementById("f-km")?.addEventListener("change", (e) => {
-    store.set("karibu_filter_km", Number(e.target.value)); render();
-  });
-  document.getElementById("geo")?.addEventListener("click", () => {
-    if (!navigator.geolocation) return toast("Location not available in this browser.");
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        const here = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-        const nairobi = { lat: -1.2921, lng: 36.8219 };
-        toast(`Location on · ~${haversine(here, nairobi).toFixed(1)} km from Nairobi CBD`);
-      },
-      () => toast("Location permission denied. You can still filter by county.")
-    );
-  });
-  document.querySelectorAll("[data-act=like]").forEach(btn => btn.onclick = () => {
-    const matched = addLike(Number(btn.dataset.id));
-    toast(matched ? "It's a match!" : "Liked");
-    render();
-  });
-  document.querySelectorAll("[data-act=pass]").forEach(btn => btn.onclick = () => {
-    addPass(Number(btn.dataset.id));
-    toast("Passed");
-    render();
-  });
-  document.querySelectorAll("[data-act=report]").forEach(btn => btn.onclick = () => {
-    toast("Report sent. Chat hidden in a full build.");
-  });
-  const chatForm = document.getElementById("chat-form");
-  if (chatForm) chatForm.onsubmit = (e) => {
-    e.preventDefault();
-    const text = new FormData(chatForm).get("text").trim();
-    if (!text) return;
-    const id = Number(query().with || matches()[0]);
-    const all = chats();
-    all[id] = all[id] || [];
-    all[id].push({ who: "me", text });
-    store.set("karibu_chats", all);
-    render();
-  };
-  document.getElementById("profile-form")?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    setUser({ ...currentUser(), ...Object.fromEntries(new FormData(e.target)) });
-    toast("Profile saved");
-  });
-  document.getElementById("reset-deck")?.addEventListener("click", () => {
-    store.set("karibu_likes", []); store.set("karibu_passes", []);
-    toast("Deck reset"); render();
-  });
-  document.getElementById("send-report")?.addEventListener("click", () => {
-    const reports = store.get("karibu_reports", []);
-    reports.push({ id: document.getElementById("report-user").value, why: document.getElementById("report-why").value, at: Date.now() });
-    store.set("karibu_reports", reports);
-    toast("Report submitted");
-  });
-  document.getElementById("stk")?.addEventListener("click", () => {
-    const phone = document.getElementById("mpesa-phone").value || "2547…";
-    toast(`STK would pop on ${phone}. Connect Daraja to go live.`);
-  });
+function publicShell() {
+  if (screen === "auth") return authView();
+  return `<div class="shell">
+    <div class="top"><div class="brand"><div class="mark">K</div> Karibu</div><button class="solid" id="go-auth">Join free</button></div>
+    <section class="hero">
+      <div>
+        <div class="kicker">Location matchmaking · Kenya · 18+</div>
+        <h1>Meet someone near you, not across the internet.</h1>
+        <p class="lede">Karibu ranks people by GPS or county — Nairobi, Mombasa, Kisumu, Eldoret, and the rest. Filter by distance, age, tribe, religion, or student, professional, and church mode.</p>
+        <div class="row"><button class="solid" id="go-auth-2">Create a profile</button><button class="ghost" id="demo">Try the Nairobi demo</button></div>
+        <div class="pills"><span class="pill">County matching</span><span class="pill">Sheng-friendly bios</span><span class="pill">M-Pesa Plus</span><span class="pill">Report & block</span></div>
+      </div>
+      <div class="preview"><div class="card-face" style="--photo:${photoStyle(seed[1])}"><span>2.4 km · Westlands</span><strong>Brian, 29</strong><span>Karura hikes · coffee · startups</span></div></div>
+    </section>
+    <p class="footer-note">Demo data stays in your browser. Meet in public places. Never send money to someone you have not met.</p>
+  </div>`;
 }
-
-window.addEventListener("hashchange", render);
+function authView() {
+  return `<div class="shell"><div class="top"><div class="brand"><div class="mark">K</div> Karibu</div><button class="ghost" id="home">Back</button></div>
+    <div class="auth" style="max-width:480px;margin:28px auto">
+      <h2>Sasa. Create your account.</h2>
+      <p class="lede">You must be 18 or older. This demo stores the account on this device only.</p>
+      <form id="auth-form">
+        <label>Email</label><input name="email" type="email" required placeholder="you@email.com" />
+        <label>Password</label><input name="password" type="password" required minlength="6" />
+        <label>I confirm I am 18 or older</label><input name="adult" type="checkbox" required style="width:auto" />
+        <div class="row"><button class="solid" name="mode" value="register">Register</button><button class="ghost" name="mode" value="login">Log in</button></div>
+      </form>
+      <p class="footer-note">Demo login: demo@karibu.ke / karibu123</p>
+    </div></div>`;
+}
+function appShell() {
+  const tabs = [["discover", "Nearby"], ["matches", "Matches"], ["chat", "Chat"], ["notes", "Alerts"], ["profile", "Profile"], ["plus", "Plus"], ["safety", "Safety"]];
+  return `<div class="shell">
+    <div class="top"><div class="brand"><div class="mark">K</div> Karibu</div>
+      <div class="nav">${tabs.map(([id, label]) => `<button data-screen="${id}" class="${screen === id ? "active" : ""}">${label}</button>`).join("")}<button id="logout">Log out</button></div>
+    </div>
+    <div style="height:16px"></div>
+    ${screen === "discover" ? discoverView() : screen === "matches" ? matchesView() : screen === "chat" ? chatView() : screen === "notes" ? notesView() : screen === "profile" ? profileView() : screen === "plus" ? plusView() : safetyView()}
+  </div>`;
+}
+function discoverView() {
+  const people = candidates();
+  const p = people[0];
+  const opts = (arr) => ["Any", ...arr].map(v => `<option ${filters.county === v || filters.tribe === v || filters.religion === v || filters.mode === v || filters.interest === v ? "" : ""}>${v}</option>`).join("");
+  return `<div class="grid-2">
+    <aside class="panel filters">
+      <h3>Filters</h3>
+      <label>County</label><select id="f-county">${COUNTIES.map(c => c.name).concat(["Any"]).map(n => `<option ${filters.county === n ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <label>Max distance (km)</label><input id="f-distance" type="number" value="${filters.distance}" min="1" max="800" />
+      <label>Age</label><div class="row"><input id="f-min" type="number" value="${filters.minAge}" min="18" /><input id="f-max" type="number" value="${filters.maxAge}" /></div>
+      <label>Tribe</label><select id="f-tribe">${["Any", ...TRIBES].map(n => `<option ${filters.tribe === n ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <label>Religion</label><select id="f-religion">${["Any", ...RELIGIONS].map(n => `<option ${filters.religion === n ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <label>Mode</label><select id="f-mode">${["Any", ...MODES].map(n => `<option ${filters.mode === n ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <label>Interest</label><select id="f-interest">${["Any", ...INTERESTS].map(n => `<option ${filters.interest === n ? "selected" : ""}>${n}</option>`).join("")}</select>
+      <button class="solid" id="locate">Use my GPS</button>
+      <p class="footer-note">Showing people within ${filters.distance} km of ${me().county}. Distance uses your coordinates.</p>
+    </aside>
+    <div class="deck-wrap">${p ? personCard(p) : `<div class="notice">No one left in this radius. Widen distance or switch county.</div>`}</div>
+  </div>`;
+}
+function personCard(p) {
+  return `<article class="person">
+    <div class="photo" style="--photo:${photoStyle(p)}"><div><div>${p.distance} km · ${p.county}</div><h2>${p.name}, ${p.age}</h2></div></div>
+    <div class="meta"><p>${p.bio}</p><div class="chips">${p.interests.map(i => `<span class="chip">${i}</span>`).join("")}<span class="chip">${p.mode} mode</span><span class="chip">${p.tribe}</span></div>
+      <div class="actions"><button class="pass" data-pass="${p.id}">✕</button><button class="like" data-like="${p.id}">♥</button><button class="danger" data-report="${p.id}">Report</button></div>
+    </div></article>`;
+}
+function matchesView() {
+  const mine = state.matches.filter(m => m.email === state.user.email);
+  if (!mine.length) return `<div class="panel"><h2>No matches yet</h2><p>Like someone nearby. In this demo, Amina, Brian, Faith, and David like you back.</p></div>`;
+  return `<div class="list panel"><h2>Matches</h2>${mine.map(m => `<div class="match-row"><div class="avatar" style="background:${photoStyle(m)}">${m.name[0]}</div><div><strong>${m.name}</strong><div>${m.county} · ${m.distance} km</div></div><button class="solid" data-open="${m.id}">Chat</button></div>`).join("")}</div>`;
+}
+function chatView() {
+  const mine = state.matches.filter(m => m.email === state.user.email);
+  const thread = (state.messages[chatWith] || []);
+  const person = seed.find(p => p.id === chatWith);
+  return `<div class="grid-2"><aside class="panel">${mine.map(m => `<button class="ghost" data-open="${m.id}" style="width:100%;margin-bottom:8px">${m.name}</button>`).join("") || "Match first."}</aside>
+    <div class="chat panel">${person ? `<h2>${person.name}</h2><div class="chat-log">${thread.map(t => `<div class="bubble ${t.from === "me" ? "me" : ""}">${t.text}</div>`).join("")}</div><form id="send"><div class="row"><input name="text" placeholder="Andika ujumbe..." required /><button class="solid">Send</button></div></form>` : "<p>Pick a match.</p>"}</div></div>`;
+}
+function notesView() {
+  return `<div class="panel"><h2>Notifications</h2>${state.notes.length ? state.notes.map(n => `<div class="note"><div><strong>${n.text}</strong><div>${n.at}</div></div></div>`).join("") : "<p>Likes, matches, and reports show up here.</p>"}</div>`;
+}
+function profileView() {
+  const p = me();
+  return `<form class="form" id="profile">
+    <h2>Your profile</h2>
+    <div class="row"><div style="flex:1"><label>Name</label><input name="name" value="${p.name}" required /></div><div style="width:100px"><label>Age</label><input name="age" type="number" min="18" value="${p.age}" required /></div></div>
+    <label>Bio</label><textarea name="bio" rows="3">${p.bio || ""}</textarea>
+    <label>County</label><select name="county">${COUNTIES.map(c => `<option ${p.county === c.name ? "selected" : ""}>${c.name}</option>`).join("")}</select>
+    <div class="row"><div style="flex:1"><label>I am</label><select name="gender">${["Woman", "Man", "Non-binary"].map(g => `<option ${p.gender === g ? "selected" : ""}>${g}</option>`).join("")}</select></div>
+    <div style="flex:1"><label>Looking for</label><select name="looking">${["Women", "Men", "Everyone"].map(g => `<option ${p.looking === g ? "selected" : ""}>${g}</option>`).join("")}</select></div></div>
+    <div class="row"><div style="flex:1"><label>Tribe</label><select name="tribe">${TRIBES.map(t => `<option ${p.tribe === t ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+    <div style="flex:1"><label>Religion</label><select name="religion">${RELIGIONS.map(t => `<option ${p.religion === t ? "selected" : ""}>${t}</option>`).join("")}</select></div>
+    <div style="flex:1"><label>Mode</label><select name="mode">${MODES.map(t => `<option ${p.mode === t ? "selected" : ""}>${t}</option>`).join("")}</select></div></div>
+    <label>Interests</label><input name="interests" value="${(p.interests || []).join(", ")}" />
+    <label>Photo upload</label><input name="photo" type="file" accept="image/*" />
+    ${p.photos && p.photos[0] ? `<img alt="Your upload" src="${p.photos[0]}" style="width:120px;height:120px;object-fit:cover;border-radius:16px;margin-top:8px" />` : ""}
+    <div class="row"><button class="solid">Save profile</button></div>
+  </form>`;
+}
+function plusView() {
+  return `<div class="panel"><h2>Karibu Plus</h2><p>See who liked you, unlimited swipes, and a county boost. KES 499 / month.</p>
+    <div class="warn">M-Pesa STK Push is a preview only. No payment is sent.</div>
+    <form id="mpesa"><label>Safaricom number</label><input name="phone" placeholder="07XXXXXXXX" required /><button class="solid">Request STK push</button></form>
+    <p id="stk"></p></div>`;
+}
+function safetyView() {
+  return `<div class="panel"><h2>Safety</h2>
+    <ul><li>Meet in a public place the first time — a mall, Java, or a busy hotel lobby.</li><li>Do not share your PIN, ID photos, or send money.</li><li>Block and report anyone who pressures you.</li></ul>
+    <h3>Your reports</h3>
+    ${state.reports.filter(r => r.by === state.user.email).map(r => `<div class="note">${r.reason} · ${r.target}</div>`).join("") || "<p>None yet.</p>"}
+  </div>`;
+}
+function bind() {
+  document.querySelectorAll("[data-screen]").forEach(b => b.onclick = () => { screen = b.dataset.screen; render(); });
+  const home = document.getElementById("home"); if (home) home.onclick = () => { screen = "home"; render(); };
+  const go = document.getElementById("go-auth") || document.getElementById("go-auth-2");
+  document.querySelectorAll("#go-auth, #go-auth-2").forEach(b => b.onclick = () => { screen = "auth"; render(); });
+  const demo = document.getElementById("demo");
+  if (demo) demo.onclick = () => login("demo@karibu.ke", "karibu123");
+  const form = document.getElementById("auth-form");
+  if (form) form.onsubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const email = String(data.get("email")).toLowerCase();
+    const password = String(data.get("password"));
+    if (e.submitter && e.submitter.value === "login") return login(email, password);
+    if (state.accounts.some(a => a.email === email)) return alert("Account exists. Log in.");
+    const county = COUNTIES[0];
+    state.accounts.push({ email, password, profile: { name: email.split("@")[0], age: 21, county: county.name, tribe: "Prefer not to say", religion: "Prefer not to say", mode: "Open", bio: "", interests: ["Coffee"], gender: "Woman", looking: "Everyone", lat: county.lat, lng: county.lng, photos: [], hue: 160 } });
+    state.user = state.accounts.at(-1);
+    save(); screen = "profile"; render();
+  };
+  const out = document.getElementById("logout");
+  if (out) out.onclick = () => { state.user = null; screen = "home"; save(); render(); };
+  document.querySelectorAll("[data-like]").forEach(b => b.onclick = () => like(b.dataset.like));
+  document.querySelectorAll("[data-pass]").forEach(b => b.onclick = () => pass(b.dataset.pass));
+  document.querySelectorAll("[data-report]").forEach(b => b.onclick = () => report(b.dataset.report));
+  document.querySelectorAll("[data-open]").forEach(b => b.onclick = () => { chatWith = b.dataset.open; screen = "chat"; render(); });
+  const locate = document.getElementById("locate");
+  if (locate) locate.onclick = () => {
+    if (!navigator.geolocation) return alert("GPS is not available in this browser.");
+    navigator.geolocation.getCurrentPosition(pos => {
+      me().lat = pos.coords.latitude; me().lng = pos.coords.longitude;
+      notify("Location updated from GPS.");
+      save(); render();
+    }, () => alert("Location permission denied. County centroid is still used."));
+  };
+  ["county", "tribe", "religion", "mode", "interest"].forEach(key => {
+    const el = document.getElementById("f-" + key);
+    if (el) el.onchange = () => { filters[key] = el.value; render(); };
+  });
+  const dist = document.getElementById("f-distance");
+  if (dist) dist.onchange = () => { filters.distance = Number(dist.value); render(); };
+  const min = document.getElementById("f-min"), max = document.getElementById("f-max");
+  if (min) min.onchange = () => { filters.minAge = Number(min.value); render(); };
+  if (max) max.onchange = () => { filters.maxAge = Number(max.value); render(); };
+  const profile = document.getElementById("profile");
+  if (profile) profile.onsubmit = async (e) => {
+    e.preventDefault();
+    const data = new FormData(profile);
+    const file = data.get("photo");
+    const next = { ...me(), name: data.get("name"), age: Number(data.get("age")), bio: data.get("bio"), county: data.get("county"), gender: data.get("gender"), looking: data.get("looking"), tribe: data.get("tribe"), religion: data.get("religion"), mode: data.get("mode"), interests: String(data.get("interests")).split(",").map(s => s.trim()).filter(Boolean) };
+    const c = COUNTIES.find(x => x.name === next.county);
+    if (c && !next.photos.length) { next.lat = c.lat; next.lng = c.lng; }
+    if (file && file.size) next.photos = [await fileToData(file)];
+    state.user.profile = next;
+    state.accounts = state.accounts.map(a => a.email === state.user.email ? state.user : a);
+    notify("Profile saved.");
+    save(); alert("Profile saved on this device.");
+  };
+  const send = document.getElementById("send");
+  if (send) send.onsubmit = (e) => {
+    e.preventDefault();
+    const text = new FormData(send).get("text");
+    state.messages[chatWith] = state.messages[chatWith] || [];
+    state.messages[chatWith].push({ from: "me", text });
+    state.messages[chatWith].push({ from: "them", text: "Poa. I am around this evening if you are free for coffee." });
+    notify("New reply in chat.");
+    save(); render();
+  };
+  const mpesa = document.getElementById("mpesa");
+  if (mpesa) mpesa.onsubmit = (e) => {
+    e.preventDefault();
+    document.getElementById("stk").textContent = "STK prompt preview sent to " + new FormData(mpesa).get("phone") + ". In production this calls Safaricom Daraja.";
+  };
+}
+function login(email, password) {
+  const account = state.accounts.find(a => a.email === email && a.password === password);
+  if (!account) return alert("No match for that email and password.");
+  state.user = account; screen = "discover"; save(); render();
+}
+function like(id) {
+  const email = state.user.email;
+  state.likes[email] = state.likes[email] || [];
+  state.likes[email].push(id);
+  const person = seed.find(p => p.id === id);
+  if (["a1", "a2", "a4", "a5"].includes(id)) {
+    state.matches.push({ email, ...person, distance: km(me(), person) });
+    notify(`You matched with ${person.name}.`);
+  } else notify(`You liked ${person.name}.`);
+  save(); render();
+}
+function pass(id) {
+  const email = state.user.email;
+  state.passes[email] = state.passes[email] || [];
+  state.passes[email].push(id);
+  save(); render();
+}
+function report(id) {
+  const reason = prompt("Why are you reporting this profile?", "Fake profile");
+  if (!reason) return;
+  state.reports.push({ by: state.user.email, target: id, reason });
+  state.blocks.push(id);
+  notify("Report received. Profile blocked on this device.");
+  save(); render();
+}
+function fileToData(file) {
+  return new Promise(resolve => { const r = new FileReader(); r.onload = () => resolve(r.result); r.readAsDataURL(file); });
+}
 render();

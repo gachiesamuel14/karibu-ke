@@ -1,31 +1,40 @@
-# Karibu KE
+# Karibu
 
-Location-based matchmaking for people in Kenya.
+Location-based matchmaking for adults in Kenya. People create a profile, share a county or GPS point, then swipe, match, and chat with people nearby.
 
-Live demo: https://karibu-ke.netlify.app
+Live site target: https://karibu-ke.netlify.app
 
-## What this demo includes
+Repository: https://github.com/gachiesamuel14/karibu-ke
 
-- Landing page with Kenyan localization
-- Register / login (stored in your browser)
-- Profile setup (county, tribe, religion, mode, interests)
-- Discover feed with distance + county filters
-- Like / pass swipe cards
-- Matches list
-- In-browser chat
-- Report / safety flow
-- Premium + M-Pesa payment tease (UI only)
+## Demo login
 
-This is a **frontend MVP**. Auth, GPS, chat, photos, and payments are simulated so you can ship the look and flow on Netlify today.
+- Email: `demo@karibu.ke`
+- Password: `karibu123`
 
-## Next production steps
+New accounts stay in this browser only (`localStorage`). Clearing site data resets the demo.
 
-1. Add a backend (Supabase or Firebase) for real users, photos, and chat.
-2. Request geolocation and store coordinates; rank by Haversine distance.
-3. Wire Safaricom Daraja STK Push for premium.
-4. Add Cloudinary for photo uploads and moderation.
-5. Connect GitHub → Netlify continuous deploy (already the hosting target).
+## What works in this MVP
 
-## Local
+1. Registration and login, with an 18+ age gate
+2. Profile setup: photos as local uploads, bio, county, tribe, religion, mode, interests
+3. GPS permission, with county centroids as a fallback
+4. Nearby ranking with the Haversine formula, plus filters for county, distance, age, tribe, religion, mode, and interests
+5. Like / pass, mutual matches
+6. Chat stored in the browser, with a short demo reply
+7. Photo upload preview
+8. In-app notifications
+9. Report and block
+10. Karibu Plus screen with an M-Pesa STK tease (no real charge)
 
-Open `index.html` or run any static server from this folder.
+## Production path
+
+Netlify hosts the frontend. Real accounts, photos, and chat need a backend:
+
+- Auth + database: Supabase (Postgres, storage, realtime) or Firebase
+- Photos: Supabase Storage or Cloudinary, with moderation before profiles go live
+- Maps: browser Geolocation API is enough to start; Google Maps is optional for a map view
+- Payments: Safaricom Daraja STK Push for Karibu Plus
+- Chat: Supabase Realtime or a websocket service
+- Deploy: connect this GitHub repo to the Netlify site `karibu-ke` so every push to `main` publishes
+
+Do not ship the localStorage auth to real users. It is a prototype only.
